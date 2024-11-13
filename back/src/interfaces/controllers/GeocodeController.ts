@@ -1,10 +1,11 @@
-const GeocodeService = require('../../application/GeocodeService');
-const OpenMeteoAPI = require('../../infrastructure/OpenMeteoAPI');
+import { Request, Response } from 'express';
+import { GeocodeService } from '../../application/GeocodeService';
+import { OpenMeteoAPI } from '../../infrastructure/OpenMeteoAPI';
 
-class GeocodeController {
-    static async getGeocode(req, res) {
+export class GeocodeController {
+    async getGeocode(req: Request, res: Response) {
         const { location, source = 'open-meteo' } = req.query;
-        if (!location) {
+        if (!location || typeof location !== 'string') {
             return res.status(400).json({ error: 'Location parameter is required' });
         }
 
@@ -19,13 +20,10 @@ class GeocodeController {
         const geocodeService = new GeocodeService(geocodeAdapter);
 
         try {
-            const geocode = await geocodeService.getGeocode(location);
-            res.json(geocode.toJSON());
+            const geocodeResults = await geocodeService.getGeocode(location);
+            res.json(geocodeResults);
         } catch (error) {
-            res.status(500).json({ error });
-            // res.status(500).json({ error: 'Error fetching address' });
+            res.status(500).json({ error: 'Error fetching address' });
         }
     }
 }
-
-module.exports = GeocodeController;
