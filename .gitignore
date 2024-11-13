@@ -1,0 +1,64 @@
+# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# Compiled output
+/front/dist
+/front/tmp
+/front/out-tsc
+/front/bazel-out
+/back/dist
+/back/tmp
+/back/out-tsc
+/back/bazel-out
+
+# Node
+/front/node_modules
+/front/npm-debug.log
+/front/yarn-error.log
+/back/node_modules
+/back/npm-debug.log
+/back/yarn-error.log
+
+# IDEs and editors
+/front/.idea/
+/front/.project
+/front/.classpath
+/front/.c9/
+/front/*.launch
+/front/.settings/
+/front/*.sublime-workspace
+/back/.idea/
+/back/.project
+/back/.classpath
+/back/.c9/
+/back/*.launch
+/back/.settings/
+/back/*.sublime-workspace
+
+# Visual Studio Code in the root only
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Miscellaneous
+/front/.angular/cache
+/front/.sass-cache/
+/front/connect.lock
+/front/coverage
+/front/libpeerconnection.log
+/front/testem.log
+/front/typings
+/back/.angular/cache
+/back/.sass-cache/
+/back/connect.lock
+/back/coverage
+/back/libpeerconnection.log
+/back/testem.log
+/back/typings
+
+# System files
+/front/.DS_Store
+/front/Thumbs.db
+/back/.DS_Store
+/back/Thumbs.db
