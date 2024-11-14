@@ -53,7 +53,7 @@ export class OpenMeteoAPI implements GeocodeAdapter, WeatherAdapter {
         
         return daily.time.map((time: string, index: number) => ({
             time: `${time}`,
-            weatherCode: `${daily.weather_code[index]} ${daily_units.weather_code}`,
+            weatherCode: `${daily.weather_code[index]}`,
             temperatureMax: `${daily.temperature_2m_max[index]} ${daily_units.temperature_2m_max}`,
             temperatureMin: `${daily.temperature_2m_min[index]} ${daily_units.temperature_2m_min}`,
             sunrise: `${daily.sunrise[index]}`,
