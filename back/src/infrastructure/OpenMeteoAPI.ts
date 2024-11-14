@@ -42,7 +42,7 @@ export class OpenMeteoAPI implements GeocodeAdapter, WeatherAdapter {
             }
         });
 
-        return this.parseGeocodeData(response?.data?.results);
+        return this.parseGeocodeData(response?.data);
     }
 
     private parseWeatherData(data: any): WeatherResult[] {
@@ -65,19 +65,22 @@ export class OpenMeteoAPI implements GeocodeAdapter, WeatherAdapter {
         }));
     }
 
-    private parseGeocodeData(results: any[]): GeocodeResult[] {
-        if (!results) {
+    private parseGeocodeData(data: any): GeocodeResult[] {
+        if (!data) {
             return [];
         }
-        return results.map(result => ({
-            latitude: result.latitude,
-            longitude: result.longitude,
-            elevation: `${result.elevation}m`,
-            name: result.name,
-            admin: result.admin1,
-            country: result.country,
-            countryCode: result.country_code,
-            timezone: result.timezone
+
+        const { results } = data;   
+
+        return results.map((city: any) => ({
+            latitude: city.latitude,
+            longitude: city.longitude,
+            elevation: `${city.elevation}m`,
+            name: city.name,
+            admin: city.admin1,
+            country: city.country,
+            countryCode: city.country_code,
+            timezone: city.timezone
         }));
     }
 }
