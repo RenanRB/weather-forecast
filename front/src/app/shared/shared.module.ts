@@ -1,18 +1,35 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ComponentsModule } from './components/components.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatIconModule } from '@angular/material/icon';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
-  declarations: [],
   imports: [
     CommonModule,
-    ComponentsModule,
+    FormsModule,
+    MatCardModule,
     MatSlideToggleModule,
+    MatIconModule,
+    MatGridListModule,
+    MatAutocompleteModule,
+    MatInputModule,
+    ReactiveFormsModule,
   ],
   exports: [
-    ComponentsModule,
-    MatSlideToggleModule
+    CommonModule,
+    FormsModule,
+    MatCardModule,
+    MatSlideToggleModule,
+    MatIconModule,
+    MatGridListModule,
+    MatAutocompleteModule,
+    MatInputModule,
+    ReactiveFormsModule,
   ]
 })
 export class SharedModule { }

@@ -1,0 +1,109 @@
+.weather-dashboard {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .sidebar {
+    width: 25%;
+    background-color: #2d2d2d;
+    color: white;
+    text-align: center;
+    border-radius: unset;
+
+    .weather-icon {
+      mat-icon {
+        font-size: 60px;
+        width: 60px;
+        height: 60px;
+      }
+    }
+  }
+  
+  .main-content {
+    width: 75%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .week-forecast {
+    margin-bottom: 20px;
+    height: 25%;
+
+    .week-forecast-header {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .forecast-grid {
+      display: flex;
+      justify-content: space-around;
+  
+      mat-card {
+        width: 12%;
+        height: 140px;
+        text-align: center;
+        background-color: #333;
+        color: white;
+  
+        
+        mat-card-content {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          align-items: center;
+          height: 100%;
+  
+          .temperature-range {
+            display: flex;
+            flex-direction: column;
+          }
+        }
+      }
+    }
+  }
+  
+  .today-highlights {
+    height: 70%;
+  
+    .highlights-grid {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex-wrap: wrap;
+      height: 100%;
+
+      mat-card {
+        background-color: #333;
+        color: white;
+        text-align: center;
+        width: 30%;
+        margin-bottom: 20px;
+        height: 190px;
+        max-height: 40%;
+        padding: 20px;
+
+        mat-card-content {
+          .highlight-item-title {
+            height: 20%;
+            text-align: left;
+            font-size: 20px;
+            margin-left: 20px;
+          }
+          .highlight-item-content {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            height: 80%;
+
+            mat-icon {
+              font-size: 60px;
+              width: 60px;
+              height: 60px;
+            }
+          }
+        }
+      }
+    }
+  }
+  

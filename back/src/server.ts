@@ -1,9 +1,15 @@
 import express from 'express';
+import cors from 'cors';
 import { GeocodeController } from './interfaces/controllers/GeocodeController';
 import { WeatherController } from './interfaces/controllers/WeatherController';
 
 const app = express();
 const PORT = process.env.PORT ?? 3000;
+
+app.use(cors({
+    origin: 'http://localhost:4200',
+    credentials: true
+}));
 
 const geocodeController = new GeocodeController();
 const weatherController = new WeatherController();

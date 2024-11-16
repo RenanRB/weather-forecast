@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { GeocodeAdapter, GeocodeResult } from '../domain/GeocodeAdapter';
-import { WeatherAdapter, WeatherResult } from '../domain/WeatherAdapter';
+import { CurrentWeatherData, CurrentWeatherUnits, WeatherData, WeatherUnits, WeatherAdapter, WeatherResult } from '../domain/WeatherAdapter';
 
-const DAILY_PARAMS = 'weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,rain_sum,wind_speed_10m_max,wind_gusts_10m_max,wind_direction_10m_dominant';
+const DAILY_PARAMS = 'weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,rain_sum,wind_speed_10m_max,wind_gusts_10m_max,wind_direction_10m_dominant,apparent_temperature_max,apparent_temperature_min,uv_index_clear_sky_max';
+const CURRENT_PARAMS = 'temperature_2m,relative_humidity_2m,apparent_temperature,is_day,weather_code,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m';
+const FORECAST_URL = 'https://api.open-meteo.com';
 const HISTORICAL_URL = 'https://historical-forecast-api.open-meteo.com';
 const GEOCODING_URL = 'https://geocoding-api.open-meteo.com';
 
@@ -10,28 +12,36 @@ export class OpenMeteoAPI implements GeocodeAdapter, WeatherAdapter {
     async fetchWeatherData(
         lat: number, 
         lon: number,
-    ): Promise<WeatherResult[]> {
-        const today = new Date();
-        const sevenDaysAgo = new Date(today);
-        sevenDaysAgo.setDate(today.getDate() - 7);
-
-        const formatDate = (date: Date): string => {
-            return date.toISOString().split('T')[0];
-        };
-
-        const response = await axios.get(`${HISTORICAL_URL}/v1/forecast`, {
+        timezone: string
+    ): Promise<WeatherResult> {
+        const responseDaily = await axios.get(`${FORECAST_URL}/v1/forecast`, {
             params: {
                 latitude: lat,
                 longitude: lon,
-                start_date: formatDate(sevenDaysAgo),
-                end_date: formatDate(today),
                 daily: DAILY_PARAMS,
-                timezone: 'auto',
+                current: CURRENT_PARAMS,
+                timezone: timezone,
+                models: 'icon_seamless'
+            }
+        });
+        const responseHistorical = await axios.get(`${HISTORICAL_URL}/v1/forecast`, {
+            params: {
+                latitude: lat,
+                longitude: lon,
+                past_days: 7,
+                daily: DAILY_PARAMS,
+                timezone: timezone,
                 models: 'icon_seamless'
             }
         });
 
-        return this.parseWeatherData(response?.data);
+        return {
+            forecastUnits: this.toForecastUnitsDTO(responseDaily?.data),
+            dailyForecast: this.toForecastDTO(responseDaily?.data),
+            historicalWeatherData: this.toForecastDTO(responseHistorical?.data),
+            currentWeatherUnits: this.toCurrentForecastUnitsDTO(responseDaily?.data),
+            currentWeatherData: this.toCurrentForecastDTO(responseDaily?.data),
+        } as WeatherResult;
     }
 
     async fetchGeocodeData(location: string): Promise<GeocodeResult[]> {
@@ -42,30 +52,77 @@ export class OpenMeteoAPI implements GeocodeAdapter, WeatherAdapter {
             }
         });
 
-        return this.parseGeocodeData(response?.data);
+        return this.toGeocodeDTO(response?.data);
     }
 
-    private parseWeatherData(data: any): WeatherResult[] {
+    private toForecastDTO(data: any): WeatherData[] {
         if (!data) {
             return [];
         }
-        const { daily, daily_units } = data;
+        const { daily } = data;
         
         return daily.time.map((time: string, index: number) => ({
-            time: `${time}`,
-            weatherCode: `${daily.weather_code[index]}`,
-            temperatureMax: `${daily.temperature_2m_max[index]} ${daily_units.temperature_2m_max}`,
-            temperatureMin: `${daily.temperature_2m_min[index]} ${daily_units.temperature_2m_min}`,
-            sunrise: `${daily.sunrise[index]}`,
-            sunset: `${daily.sunset[index]}`,
-            rainSum: `${daily.rain_sum[index]} ${daily_units.rain_sum}`,
-            windSpeed: `${daily.wind_speed_10m_max[index]} ${daily_units.wind_speed_10m_max}`,
-            windGusts: `${daily.wind_gusts_10m_max[index]} ${daily_units.wind_gusts_10m_max}`,
-            windDirection: `${daily.wind_direction_10m_dominant[index]} ${daily_units.wind_direction_10m_dominant}`
+            time: time,
+            weatherCode: daily.weather_code[index],
+            temperatureMax: daily.temperature_2m_max[index],
+            temperatureMin: daily.temperature_2m_min[index],
+            sunrise: daily.sunrise[index],
+            sunset: daily.sunset[index],
+            rainSum: daily.rain_sum[index],
+            windSpeed:  daily.wind_speed_10m_max[index],
+            windGusts: daily.wind_gusts_10m_max[index],
+            windDirection: daily.wind_direction_10m_dominant[index],
+            uvIndex: daily.uv_index_clear_sky_max[index],
+            apparentTemperatureMax: daily.apparent_temperature_max[index],
+            apparentTemperatureMin: daily.apparent_temperature_min[index],
         }));
     }
 
-    private parseGeocodeData(data: any): GeocodeResult[] {
+    private toForecastUnitsDTO(data: any): WeatherUnits {
+        const { daily_units } = data;
+        return {
+            temperatureMax: daily_units.temperature_2m_max,
+            temperatureMin: daily_units.temperature_2m_min,
+            rainSum: daily_units.rain_sum,
+            windSpeed: daily_units.wind_speed_10m_max,
+            windGusts: daily_units.wind_gusts_10m_max,
+            windDirection: daily_units.wind_direction_10m_dominant,
+            uvIndex: daily_units.uv_index_clear_sky_max,
+            apparentTemperatureMax: daily_units.apparent_temperature_max,
+            apparentTemperatureMin: daily_units.apparent_temperature_min,
+        };
+    }
+
+    private toCurrentForecastUnitsDTO(data: any): CurrentWeatherUnits {
+        const { current_units } = data;
+        return {
+            humidity: current_units.relative_humidity_2m,
+            temperature: current_units.temperature_2m,
+            apparentTemperature: current_units.apparent_temperature,
+            windSpeed: current_units.wind_speed_10m,
+            windDirection: current_units.wind_direction_10m,
+            windGusts: current_units.wind_gusts_10m,
+            isDayOrNight: current_units.is_day,
+            surfacePressure: current_units.surface_pressure,
+        };
+    }
+
+    private toCurrentForecastDTO(data: any): CurrentWeatherData {
+        const { current } = data;
+        return {
+            humidity: current?.relative_humidity_2m,
+            temperature: current?.temperature_2m,
+            apparentTemperature: current?.apparent_temperature,
+            windSpeed: current?.wind_speed_10m,
+            windDirection: current?.wind_direction_10m,
+            windGusts: current?.wind_gusts_10m,
+            isDayOrNight: current?.is_day,
+            surfacePressure: current?.surface_pressure,
+            weatherCode: current?.weather_code,
+        };
+    }
+
+    private toGeocodeDTO(data: any): GeocodeResult[] {
         if (!data) {
             return [];
         }

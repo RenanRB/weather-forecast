@@ -1,2 +1,123 @@
-<p>home works!</p>
-<mat-slide-toggle>Toggle me!</mat-slide-toggle>
+<div class="weather-dashboard">
+    <!-- Sidebar Section -->
+    <mat-card class="sidebar">
+      <mat-card-content>
+        <mat-form-field>
+          <input type="text"
+                 matInput
+                 [formControl]="citySearchControl"
+                 [matAutocomplete]="auto"
+                 placeholder="Search for a city">
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onCitySelected($event)" [displayWith]="displayFn">
+            <mat-option *ngFor="let city of filteredCities | async" [value]="city">
+              {{city.name}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <div class="weather-icon">
+          <mat-icon>wb_sunny</mat-icon>
+        </div>
+        <h1> {{weatherData?.currentWeatherData?.temperature}} {{weatherData?.currentWeatherUnits?.temperature}} </h1>
+        <p> {{weatherData?.dailyForecast?.[0]?.time | date:'EEE, MMM d'}} </p>
+      </mat-card-content>
+    </mat-card>
+  
+    <!-- Main Content Section -->
+    <div class="main-content">
+      <!-- Weekly Forecast -->
+      <div class="week-forecast">
+        <div class="week-forecast-header">
+          <h3>Week's Forecast</h3>
+          <mat-slide-toggle [(ngModel)]="showLastWeek">
+            <span>{{ showLastWeek ? 'Showing last week' : 'Showing current week' }}</span>
+          </mat-slide-toggle>
+        </div>
+        <div class="forecast-grid">
+          <mat-card *ngFor="let day of weatherListToShow">
+            <mat-card-content>
+              <p> {{ day.time | date:'EEE, MMM d':'' }} </p>
+              <mat-icon>cloud</mat-icon>
+              <div class="temperature-range">
+                <span>{{ day.temperatureMax + ' ' + weatherData?.forecastUnits?.temperatureMax }}</span>
+                <span>{{ day.temperatureMin + ' ' + weatherData?.forecastUnits?.temperatureMin }}</span>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+  
+      <!-- Today's Highlights -->
+      <div class="today-highlights">
+        <h3>Today's Highlights</h3>
+        <div class="highlights-grid">
+          <mat-card>
+            <mat-card-content>
+              <div class="highlight-item-title">
+                <p>UV Index</p>
+              </div>
+              <div class="highlight-item-content">
+                <mat-icon>brightness_high</mat-icon>
+                <h2>{{weatherData?.dailyForecast?.[0]?.uvIndex }} {{weatherData?.forecastUnits?.uvIndex }}</h2>
+              </div>
+            </mat-card-content>
+          </mat-card>
+          <mat-card>
+            <mat-card-content>  
+              <div class="highlight-item-title">
+                <p>Wind Speed</p>
+              </div>
+              <div class="highlight-item-content">
+                <mat-icon>air</mat-icon>
+                <h2>{{weatherData?.currentWeatherData?.windSpeed }} {{weatherData?.currentWeatherUnits?.windSpeed }}</h2>
+              </div>
+            </mat-card-content>
+          </mat-card>
+          <mat-card>
+            <mat-card-content>  
+              <div class="highlight-item-title">
+                <p>Humidity</p>
+              </div>
+              <div class="highlight-item-content">
+                <mat-icon>opacity</mat-icon>
+                <h2>{{weatherData?.currentWeatherData?.humidity }} {{weatherData?.currentWeatherUnits?.humidity }}</h2>
+              </div>
+            </mat-card-content>
+          </mat-card>
+          <mat-card>
+            <mat-card-content>  
+              <div class="highlight-item-title">
+                <p>Wind Direction</p>
+              </div>
+              <div class="highlight-item-content">
+                <mat-icon>navigation</mat-icon>
+                <h2>{{weatherData?.currentWeatherData?.windDirection }} {{weatherData?.currentWeatherUnits?.windDirection }}</h2>
+              </div>
+            </mat-card-content>
+          </mat-card>
+          <mat-card>
+            <mat-card-content>  
+              <div class="highlight-item-title">
+                <p>Feels Like</p>
+              </div>
+              <div class="highlight-item-content">
+                <mat-icon>sentiment_satisfied</mat-icon>
+                <h2> {{weatherData?.currentWeatherData?.apparentTemperature }} {{weatherData?.currentWeatherUnits?.apparentTemperature }}</h2>
+              </div>
+            </mat-card-content>
+          </mat-card>
+          <mat-card>
+            <mat-card-content>  
+              <div class="highlight-item-title">
+                <p>Pressure</p>
+              </div>
+              <div class="highlight-item-content">
+                <mat-icon>speed</mat-icon>
+                <h2> {{weatherData?.currentWeatherData?.surfacePressure }} {{weatherData?.currentWeatherUnits?.surfacePressure }}</h2>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+</div>
+  

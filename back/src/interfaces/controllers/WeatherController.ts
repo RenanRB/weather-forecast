@@ -5,9 +5,9 @@ import { OpenMeteoAPI } from '../../infrastructure/OpenMeteoAPI';
 export class WeatherController {
 
     async getWeather(req: Request, res: Response): Promise<Response> {
-        const { lat, lon, source = 'open-meteo' } = req.query;
+        const { lat, lon, timezone, source = 'open-meteo' } = req.query;
 
-        const coordinatesResult = this.validateCoordinates(lat, lon);
+        const coordinatesResult = this.validateInformation(lat, lon, timezone);
         if (coordinatesResult.error) {
             return res.status(400).json({ error: coordinatesResult.error });
         }
@@ -21,14 +21,15 @@ export class WeatherController {
             const weatherService = new WeatherService(weatherAdapter);
             const weatherResult = await weatherService.getWeather(
                 coordinatesResult.latitude!,
-                coordinatesResult.longitude!
+                coordinatesResult.longitude!,
+                coordinatesResult.timezone
             );
             return res.json(weatherResult);
         } catch (error) {
             return res.status(500).json({ error: 'Error fetching weather forecast' });
         }
     }
-    private validateCoordinates(lat: any, lon: any): { error?: string; latitude?: number; longitude?: number } {
+    private validateInformation(lat: any, lon: any, timezone: any) {
         if (!lat || !lon) {
             return { error: 'Latitude and longitude are required' };
         }
@@ -40,7 +41,11 @@ export class WeatherController {
             return { error: 'Latitude and longitude must be valid numbers' };
         }
 
-        return { latitude, longitude };
+        if (!timezone) {
+            return { error: 'Timezone is required' };
+        }
+
+        return { latitude, longitude, timezone };
     }
 
     private getWeatherAdapter(source: any): OpenMeteoAPI | null {

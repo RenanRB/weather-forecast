@@ -1,14 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
+import { WeatherResponse } from '../core/interfaces/weather.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WeatherService {
+  private readonly apiUrl = environment.apiUrl;
+
   constructor(private readonly http: HttpClient) { }
 
-  getWeather(): Observable<any> {
-    return this.http.get('https://api.openweathermap.org/data/2.5/weather?q=London&appid=b6907d289e10d714a6e88b30761fae22');
+  getWeather(lat: number, lon: number): Observable<WeatherResponse> {
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    return this.http.get<WeatherResponse>(`${this.apiUrl}/weather?lat=${lat}&lon=${lon}&timezone=${timezone}`);
   }
 }

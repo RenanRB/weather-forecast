@@ -3,13 +3,13 @@ import { WeatherAdapter, WeatherResult } from '../domain/WeatherAdapter';
 export class WeatherService {
     constructor(private readonly weatherAdapter: WeatherAdapter) {}
 
-    async getWeather(lat: number, lon: number): Promise<WeatherResult[]> {
+    async getWeather(lat: number, lon: number, timezone: string): Promise<WeatherResult> {
         this.validateCoordinates(lat, lon);
 
         try {
-            const result = await this.weatherAdapter.fetchWeatherData(lat, lon);
+            const result = await this.weatherAdapter.fetchWeatherData(lat, lon, timezone);
             
-            if (!result || result.length === 0) {
+            if (!result || result.dailyForecast?.length === 0) {
                 throw new Error('No weather data available');
             }
 
