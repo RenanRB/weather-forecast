@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   imports: [
@@ -19,6 +20,7 @@ import { MatInputModule } from '@angular/material/input';
     MatAutocompleteModule,
     MatInputModule,
     ReactiveFormsModule,
+    MatSnackBarModule,
   ],
   exports: [
     CommonModule,
@@ -30,6 +32,7 @@ import { MatInputModule } from '@angular/material/input';
     MatAutocompleteModule,
     MatInputModule,
     ReactiveFormsModule,
+    MatSnackBarModule,
   ]
 })
 export class SharedModule { }

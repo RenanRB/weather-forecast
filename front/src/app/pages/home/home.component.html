@@ -2,23 +2,34 @@
     <!-- Sidebar Section -->
     <mat-card class="sidebar">
       <mat-card-content>
-        <mat-form-field>
-          <input type="text"
-                 matInput
-                 [formControl]="citySearchControl"
-                 [matAutocomplete]="auto"
-                 placeholder="Search for a city">
-          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onCitySelected($event)" [displayWith]="displayFn">
-            <mat-option *ngFor="let city of filteredCities | async" [value]="city">
-              {{city.name}}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-        <div class="weather-icon">
-          <mat-icon>wb_sunny</mat-icon>
+        <div class="search-bar">
+          <button class="location-button" mat-icon-button (click)="getCurrentLocation()">
+            <mat-icon>share_location</mat-icon>
+          </button>
+          <mat-form-field>
+            <input type="text"
+                  matInput
+                  [formControl]="citySearchControl"
+                  [matAutocomplete]="auto"
+                  placeholder="Search for a city">
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onCitySelected($event)" [displayWith]="displayFn">
+              <mat-option *ngFor="let city of filteredCities | async" [value]="city">
+                {{city.name}} / {{city.admin}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
         </div>
-        <h1> {{weatherData?.currentWeatherData?.temperature}} {{weatherData?.currentWeatherUnits?.temperature}} </h1>
-        <p> {{weatherData?.dailyForecast?.[0]?.time | date:'EEE, MMM d'}} </p>
+        <div class="current-weather">
+          <div id="city-selected" *ngIf="citySelected">
+            <span id="city-name">{{citySelected.name}}</span>
+            <span id="city-admin">{{citySelected.admin}}</span>
+          </div>
+          <div class="weather-icon">
+            <mat-icon>wb_sunny</mat-icon>
+          </div>
+          <h1> {{weatherData?.currentWeatherData?.temperature | number:'1.0-0'}} {{weatherData?.currentWeatherUnits?.temperature}} </h1>
+          <p> {{weatherData?.dailyForecast?.[0]?.time | date:'EEE, MMM d'}} </p>
+        </div>
       </mat-card-content>
     </mat-card>
   
@@ -38,8 +49,8 @@
               <p> {{ day.time | date:'EEE, MMM d':'' }} </p>
               <mat-icon>cloud</mat-icon>
               <div class="temperature-range">
-                <span>{{ day.temperatureMax + ' ' + weatherData?.forecastUnits?.temperatureMax }}</span>
-                <span>{{ day.temperatureMin + ' ' + weatherData?.forecastUnits?.temperatureMin }}</span>
+                <span>{{ (day.temperatureMax | number:'1.0-0') + ' ' + weatherData?.forecastUnits?.temperatureMax }}</span>
+                <span>{{ (day.temperatureMin | number:'1.0-0') + ' ' + weatherData?.forecastUnits?.temperatureMin }}</span>
               </div>
             </mat-card-content>
           </mat-card>
@@ -57,7 +68,7 @@
               </div>
               <div class="highlight-item-content">
                 <mat-icon>brightness_high</mat-icon>
-                <h2>{{weatherData?.dailyForecast?.[0]?.uvIndex }} {{weatherData?.forecastUnits?.uvIndex }}</h2>
+                <h2>123 abcd</h2>
               </div>
             </mat-card-content>
           </mat-card>
@@ -68,7 +79,7 @@
               </div>
               <div class="highlight-item-content">
                 <mat-icon>air</mat-icon>
-                <h2>{{weatherData?.currentWeatherData?.windSpeed }} {{weatherData?.currentWeatherUnits?.windSpeed }}</h2>
+                <h2>{{weatherData?.currentWeatherData?.windSpeed | number:'1.0-0' }} {{weatherData?.currentWeatherUnits?.windSpeed }}</h2>
               </div>
             </mat-card-content>
           </mat-card>
@@ -79,7 +90,7 @@
               </div>
               <div class="highlight-item-content">
                 <mat-icon>opacity</mat-icon>
-                <h2>{{weatherData?.currentWeatherData?.humidity }} {{weatherData?.currentWeatherUnits?.humidity }}</h2>
+                <h2>{{weatherData?.currentWeatherData?.humidity | number:'1.0-0' }} {{weatherData?.currentWeatherUnits?.humidity }}</h2>
               </div>
             </mat-card-content>
           </mat-card>
@@ -90,7 +101,7 @@
               </div>
               <div class="highlight-item-content">
                 <mat-icon>navigation</mat-icon>
-                <h2>{{weatherData?.currentWeatherData?.windDirection }} {{weatherData?.currentWeatherUnits?.windDirection }}</h2>
+                <h2>{{weatherData?.currentWeatherData?.windDirection | number:'1.0-0' }} {{weatherData?.currentWeatherUnits?.windDirection }}</h2>
               </div>
             </mat-card-content>
           </mat-card>
@@ -101,7 +112,7 @@
               </div>
               <div class="highlight-item-content">
                 <mat-icon>sentiment_satisfied</mat-icon>
-                <h2> {{weatherData?.currentWeatherData?.apparentTemperature }} {{weatherData?.currentWeatherUnits?.apparentTemperature }}</h2>
+                <h2> {{weatherData?.currentWeatherData?.apparentTemperature | number:'1.0-0' }} {{weatherData?.currentWeatherUnits?.apparentTemperature }}</h2>
               </div>
             </mat-card-content>
           </mat-card>
@@ -112,7 +123,7 @@
               </div>
               <div class="highlight-item-content">
                 <mat-icon>speed</mat-icon>
-                <h2> {{weatherData?.currentWeatherData?.surfacePressure }} {{weatherData?.currentWeatherUnits?.surfacePressure }}</h2>
+                <h2> {{weatherData?.currentWeatherData?.surfacePressure | number:'1.0-0' }} {{weatherData?.currentWeatherUnits?.surfacePressure }}</h2>
               </div>
             </mat-card-content>
           </mat-card>
