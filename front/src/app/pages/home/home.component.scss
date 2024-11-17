@@ -1,7 +1,15 @@
+@use '@angular/material' as mat;
+$primary-palette: mat.define-palette(mat.$deep-purple-palette);
+
 .weather-dashboard {
-    display: flex;
-    height: 100vh;
-  }
+  display: flex;
+  height: 100%;
+  min-height: 100vh;
+  background: rgb(31,41,55);
+  background: -moz-linear-gradient(307deg, rgba(31,41,55,1) 0%, rgba(69,77,91,1) 50%, rgba(107,114,128,1) 100%);
+  background: -webkit-linear-gradient(307deg, rgba(31,41,55,1) 0%, rgba(69,77,91,1) 50%, rgba(107,114,128,1) 100%);
+  background: linear-gradient(307deg, rgba(31,41,55,1) 0%, rgba(69,77,91,1) 50%, rgba(107,114,128,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#1f2937",endColorstr="#6b7280",GradientType=1);
   
   .sidebar {
     width: 25%;
@@ -18,92 +26,176 @@
       }
     }
   }
-  
+
   .main-content {
     width: 75%;
-    padding: 20px;
     display: flex;
     flex-direction: column;
-  }
-  
-  .week-forecast {
-    margin-bottom: 20px;
-    height: 25%;
 
-    .week-forecast-header {
-      display: flex;
-      justify-content: space-between;
-    }
+    .week-forecast {
+      padding: 20px;
+      height: 25%;
 
-    .forecast-grid {
-      display: flex;
-      justify-content: space-around;
-  
-      mat-card {
-        width: 12%;
-        height: 140px;
-        text-align: center;
-        background-color: #333;
-        color: white;
-  
-        
-        mat-card-content {
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          align-items: center;
-          height: 100%;
-  
-          .temperature-range {
+      .week-forecast-header {
+        display: flex;
+        justify-content: space-between;
+
+        h3 {
+          color: white;
+          font-size: 20px;
+          font-weight: 500;
+        }
+
+        mat-slide-toggle span {
+          color: white;
+          font-size: 16px;
+          width: 165px;
+          display: block;
+          margin-left: 10px;
+        }
+      }
+
+      .forecast-grid {
+        display: flex;
+        justify-content: space-around;
+
+        mat-card {
+          width: 12%;
+          height: 140px;
+          text-align: center;
+          background-color: #636a78;
+          color: white;
+          -webkit-box-shadow: 3px 8px 20px 3px #292c31;
+          -moz-box-shadow: 3px 8px 20px 3px #292c31;
+          box-shadow: 3px 8px 20px 3px #292c31;
+          
+          mat-card-content {
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
+
+            .temperature-range {
+              display: flex;
+              flex-direction: column;
+            }
           }
         }
       }
     }
-  }
-  
-  .today-highlights {
-    height: 70%;
-  
-    .highlights-grid {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      flex-wrap: wrap;
-      height: 100%;
 
-      mat-card {
-        background-color: #333;
+    .today-highlights {
+      height: calc(75% - 28px);
+      padding: 20px;
+
+      h3 {
         color: white;
-        text-align: center;
-        width: 30%;
-        margin-bottom: 20px;
-        height: 190px;
-        max-height: 40%;
-        padding: 20px;
+        font-size: 26px;
+        font-weight: 600;
+      }
 
-        mat-card-content {
-          .highlight-item-title {
-            height: 20%;
-            text-align: left;
-            font-size: 20px;
-            margin-left: 20px;
-          }
-          .highlight-item-content {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 30px;
-            height: 80%;
+      .highlights-grid {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-wrap: wrap;
+        height: calc(100% - 30px);
 
-            mat-icon {
-              font-size: 60px;
-              width: 60px;
-              height: 60px;
+        mat-card {
+          display: flex;
+          justify-content: center;
+          background-color: #636a78;
+          color: white;
+          text-align: center;
+          width: 30%;
+          margin-bottom: 20px;
+          height: 190px;
+          max-height: 40%;
+          padding: 20px;
+          -webkit-box-shadow: 3px 8px 20px 3px #292c31;
+          -moz-box-shadow: 3px 8px 20px 3px #292c31;
+          box-shadow: 3px 8px 20px 3px #292c31;
+
+          mat-card-content {
+            .highlight-item-title {
+              height: 20%;
+              text-align: left;
+              font-size: 20px;
+              margin-left: 20px;
+            }
+            .highlight-item-content {
+              display: flex;
+              justify-content: space-around;
+              margin-top: 30px;
+              height: 80%;
+
+              mat-icon {
+                font-size: 60px;
+                width: 60px;
+                height: 60px;
+              }
             }
           }
         }
       }
     }
   }
-  
+}
+
+@media screen and (max-width: 1024px) {
+  .weather-dashboard {
+    flex-direction: column;
+
+    .sidebar {
+      width: 100%;
+    }
+
+    .main-content {
+      width: 100%;
+      flex-direction: column-reverse;
+    }
+  }
+}
+
+@media screen and (max-width: 842px) {
+  .weather-dashboard {
+    .main-content {
+      .week-forecast {
+        .forecast-grid {
+          flex-wrap: wrap;
+
+          mat-card {
+            width: 30%;
+            margin-bottom: 20px;
+          }
+        }
+      }
+      .today-highlights {
+        .highlights-grid {
+          mat-card {
+            width: 45%;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 556px) {
+  .weather-dashboard {
+    .main-content {
+      .today-highlights {
+        .highlights-grid {
+          mat-card {
+            width: 100%;
+
+            .highlight-item-content {
+              margin-left: -20px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
