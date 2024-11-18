@@ -134,7 +134,7 @@ export class OpenMeteoAPI implements GeocodeAdapter, WeatherAdapter {
             longitude: city.longitude,
             elevation: `${city.elevation}m`,
             name: city.name,
-            admin: city.admin1,
+            admin: city.admin1 ?? city.admin2 ?? city.admin3,
             country: city.country,
             countryCode: city.country_code,
             timezone: city.timezone

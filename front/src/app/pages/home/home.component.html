@@ -31,7 +31,7 @@
       <div class="current-weather">
         <div class="city-selected" *ngIf="citySelected">
           <div class="city-info">
-            <button class="favorite-button" mat-icon-button (click)="toggleFavorite()">
+            <button class="favorite-button" mat-icon-button (click)="toggleFavorite()" *ngIf="citySelected?.name !== 'Current Location'">
               <mat-icon [class.filled]="isFavorite" class="favorite-icon">
                 {{ isFavorite ? 'favorite' : 'favorite_border' }}
               </mat-icon>
@@ -81,8 +81,8 @@
               <mat-card-content>
                 <div class="favorite-city-content">
                   <div>
-                    <p>{{ city.name }}</p>
-                    <span>{{ city.admin }}</span>
+                    <span class="favorite-city-name">{{ city.name }}</span>
+                    <span class="favorite-city-admin">{{ city.admin }}</span>
                   </div>
                   <button mat-icon-button 
                           class="delete-button" 

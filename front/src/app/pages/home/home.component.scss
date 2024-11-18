@@ -176,6 +176,14 @@
             &:hover {
               background-color: #4a4a4a;
             }
+
+            &:first-child {
+              margin-top: 0;
+            }
+
+            &:last-child {
+              margin-bottom: 0;
+            }
     
             mat-card-content {
               .favorite-city-content {
@@ -183,14 +191,18 @@
                 justify-content: space-between;
                 align-items: center;
     
-                p {
+                .favorite-city-name {
                   margin: 0;
                   font-size: 16px;
+                  text-align: left;
+                  display: block;
                 }
       
-                span {
+                .favorite-city-admin {
                   font-size: 14px;
                   color: #cccccc;
+                  text-align: left;
+                  display: block;
                 }
             
                 .delete-button {

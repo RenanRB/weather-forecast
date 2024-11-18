@@ -121,6 +121,17 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.weatherService.getWeather(latitude, longitude).subscribe({
             next: (data) => {
               this.weatherData = data;
+              const city: GeocodeResult = {
+                name: 'Current Location',
+                latitude: latitude,
+                longitude: longitude,
+                admin: '',
+                elevation: '',
+                country: '',
+                countryCode: '',
+                timezone: '',
+              }
+              this.citySelected = city;
               this.isLoading = false;
             },
             error: (error) => {
@@ -221,8 +232,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (!this.citySelected) return;
 
     const index = this.favoriteCities.findIndex(city => 
-      city.latitude === this.citySelected?.latitude && 
-      city.longitude === this.citySelected?.longitude
+      city.name === this.citySelected?.name && 
+      city.admin === this.citySelected?.admin
     );
 
     if (index === -1) {
