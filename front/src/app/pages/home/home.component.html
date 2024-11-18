@@ -26,8 +26,8 @@
             </mat-option>
             <mat-option 
               *ngIf="citySearchControl?.dirty
-              && (citySearchControl.value?.length || 0) >= 3
-              && (filteredCities | async)?.length === 0"
+                && (citySearchControl.value?.length || 0) >= 3
+                && (filteredCities | async)?.length === 0"
               [disabled]="true">
               No city found
             </mat-option>
@@ -144,7 +144,7 @@
             </div>
             <div class="highlight-item-content">
               <mat-icon>brightness_high</mat-icon>
-              <h2>123 abcd</h2>
+              <h2>{{weatherData?.dailyForecast?.[0]?.uvIndex | number:'1.0-0' }}</h2>
             </div>
           </mat-card-content>
         </mat-card>

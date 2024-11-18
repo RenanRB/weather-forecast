@@ -2,7 +2,7 @@ import axios from 'axios';
 import { GeocodeAdapter, GeocodeResult } from '../domain/GeocodeAdapter';
 import { CurrentWeatherData, CurrentWeatherUnits, WeatherData, WeatherUnits, WeatherAdapter, WeatherResult } from '../domain/WeatherAdapter';
 
-const DAILY_PARAMS = 'weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,rain_sum,wind_speed_10m_max,wind_gusts_10m_max,wind_direction_10m_dominant,apparent_temperature_max,apparent_temperature_min,uv_index_clear_sky_max';
+const DAILY_PARAMS = 'weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,rain_sum,wind_speed_10m_max,wind_gusts_10m_max,wind_direction_10m_dominant,apparent_temperature_max,apparent_temperature_min,uv_index_max';
 const CURRENT_PARAMS = 'temperature_2m,relative_humidity_2m,apparent_temperature,is_day,weather_code,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m';
 const FORECAST_URL = 'https://api.open-meteo.com';
 const HISTORICAL_URL = 'https://historical-forecast-api.open-meteo.com';
@@ -20,8 +20,7 @@ export class OpenMeteoAPI implements GeocodeAdapter, WeatherAdapter {
                 longitude: lon,
                 daily: DAILY_PARAMS,
                 current: CURRENT_PARAMS,
-                timezone: timezone,
-                models: 'icon_seamless'
+                timezone: timezone
             }
         });
         const responseHistorical = await axios.get(`${HISTORICAL_URL}/v1/forecast`, {
@@ -72,7 +71,7 @@ export class OpenMeteoAPI implements GeocodeAdapter, WeatherAdapter {
             windSpeed:  daily.wind_speed_10m_max[index],
             windGusts: daily.wind_gusts_10m_max[index],
             windDirection: daily.wind_direction_10m_dominant[index],
-            uvIndex: daily.uv_index_clear_sky_max[index],
+            uvIndex: daily.uv_index_max[index],
             apparentTemperatureMax: daily.apparent_temperature_max[index],
             apparentTemperatureMin: daily.apparent_temperature_min[index],
         }));
@@ -87,7 +86,7 @@ export class OpenMeteoAPI implements GeocodeAdapter, WeatherAdapter {
             windSpeed: daily_units.wind_speed_10m_max,
             windGusts: daily_units.wind_gusts_10m_max,
             windDirection: daily_units.wind_direction_10m_dominant,
-            uvIndex: daily_units.uv_index_clear_sky_max,
+            uvIndex: daily_units.uv_index_max,
             apparentTemperatureMax: daily_units.apparent_temperature_max,
             apparentTemperatureMin: daily_units.apparent_temperature_min,
         };
