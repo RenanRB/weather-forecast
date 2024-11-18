@@ -9,31 +9,34 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    HttpClientModule,
+    ReactiveFormsModule,
     MatCardModule,
     MatSlideToggleModule,
     MatIconModule,
     MatGridListModule,
     MatAutocompleteModule,
     MatInputModule,
-    ReactiveFormsModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
   ],
   exports: [
     CommonModule,
     FormsModule,
+    HttpClientModule,
+    ReactiveFormsModule,
     MatCardModule,
     MatSlideToggleModule,
     MatIconModule,
     MatGridListModule,
     MatAutocompleteModule,
     MatInputModule,
-    ReactiveFormsModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
   ]

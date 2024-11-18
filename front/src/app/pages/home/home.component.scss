@@ -163,7 +163,7 @@
         flex: 1;
         
         .scrollable-list {
-          height: calc(100vh - 450px);
+          height: calc(100vh - 540px);
           overflow-y: auto;
           scrollbar-width: thin;
           
@@ -261,6 +261,12 @@
             justify-content: space-between;
             align-items: center;
             height: 100%;
+
+            .weather-icon {
+              font-size: 38px;
+              width: 38px;
+              height: 38px;
+            }
 
             .temperature-range {
               display: flex;

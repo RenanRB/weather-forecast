@@ -41,7 +41,9 @@
           <span class="city-admin">{{citySelected.admin}}</span>
         </div>
         <div class="weather-icon">
-          <mat-icon>wb_sunny</mat-icon>
+          <mat-icon 
+            [svgIcon]="getWeatherIcon(!!weatherData?.currentWeatherData?.isDayOrNight, weatherData?.currentWeatherData?.weatherCode)">
+          </mat-icon>
         </div>
         <h1 class="current-temperature">
           <span class="current-temperature-value">
@@ -109,8 +111,12 @@
       <div class="forecast-grid">
         <mat-card *ngFor="let day of weatherListToShow">
           <mat-card-content>
-            <p> {{ day.time | date:'EEE, MMM d':'' }} </p>
-            <mat-icon>cloud</mat-icon>
+            <span>{{ day.time | date:'EEE':'' }}</span>
+            <span>{{ day.time | date:'MMM d':'' }}</span>
+            <mat-icon
+              class="weather-icon"
+            [svgIcon]="getWeatherIcon(!!weatherData?.currentWeatherData?.isDayOrNight, day?.weatherCode)">
+          </mat-icon>
             <div class="temperature-range">
               <span>{{ (day.temperatureMax | number:'1.0-0') + ' ' + weatherData?.forecastUnits?.temperatureMax }}</span>
               <span>{{ (day.temperatureMin | number:'1.0-0') + ' ' + weatherData?.forecastUnits?.temperatureMin }}</span>
