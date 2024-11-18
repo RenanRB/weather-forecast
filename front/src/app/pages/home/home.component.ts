@@ -24,7 +24,11 @@ export class HomeComponent implements OnInit {
   citySearchControl = new FormControl('');
   citySelected: GeocodeResult | null = null;
   filteredCities: Observable<GeocodeResult[]>;
+  isLoading: boolean = false;
+  isFavorite = true;
   private readonly STORED_CITY_KEY = 'lastSelectedCity';
+  favoriteCities: GeocodeResult[] = [];
+  private readonly FAVORITE_CITIES_KEY = 'favoriteCities';
 
   constructor(
     private readonly weatherService: WeatherService, 
@@ -42,6 +46,7 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadFavoriteCities();
     const storedCity = this.getStoredCity();
     if (storedCity) {
       this.citySelected = storedCity;
@@ -66,17 +71,41 @@ export class HomeComponent implements OnInit {
   }
 
   loadWeather(latitude: number = -26.4263, longitude: number = -49.1467): void {
-    this.weatherService.getWeather(latitude, longitude).subscribe((data) => this.weatherData = data);
+    this.isLoading = true;
+    this.weatherService.getWeather(latitude, longitude).subscribe({
+      next: (data) => {
+        this.weatherData = data;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error loading weather data:', error);
+        this.isLoading = false;
+        this.snackBar.open('Unable to load weather data. Please try again later.', 'Close', {
+          duration: 5000,
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+        });
+      }
+    });
   }
 
   getCurrentLocation(): void {
     if (navigator.geolocation) {
+      this.isLoading = true;
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const latitude = position.coords.latitude;
           const longitude = position.coords.longitude;
-          this.weatherService.getWeather(latitude, longitude)
-            .subscribe((data) => this.weatherData = data);
+          this.weatherService.getWeather(latitude, longitude).subscribe({
+            next: (data) => {
+              this.weatherData = data;
+              this.isLoading = false;
+            },
+            error: (error) => {
+              console.error('Error loading weather data:', error);
+              this.isLoading = false;
+            }
+          });
         },
         (error) => {
           let errorMessage = 'Unable to retrieve your location. Using default location.';
@@ -124,11 +153,72 @@ export class HomeComponent implements OnInit {
   }
 
   loadWeatherData(city: GeocodeResult) {
-    this.weatherService.getWeather(city.latitude, city.longitude).subscribe((data) => this.weatherData = data);
+    this.isLoading = true;
+    this.weatherService.getWeather(city.latitude, city.longitude).subscribe({
+      next: (data) => {
+        this.weatherData = data;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error loading weather data:', error);
+        this.isLoading = false;
+        this.snackBar.open(`Failed to load weather data for ${city.name}. Please try again later.`, 'Close', {
+          duration: 5000,
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+        });
+      }
+    });
   }
 
   displayFn = (city: any): string => {
     return city ? city.name : '';
+  }
+
+  private loadFavoriteCities(): void {
+    const stored = localStorage.getItem(this.FAVORITE_CITIES_KEY);
+    this.favoriteCities = stored ? JSON.parse(stored) : [];
+    if (this.citySelected) {
+      this.isFavorite = this.favoriteCities.some(city => 
+        city.latitude === this.citySelected?.latitude && 
+        city.longitude === this.citySelected?.longitude
+      );
+    }
+  }
+
+  private saveFavoriteCities(): void {
+    localStorage.setItem(this.FAVORITE_CITIES_KEY, JSON.stringify(this.favoriteCities));
+  }
+
+  toggleFavorite(): void {
+    if (!this.citySelected) return;
+
+    const index = this.favoriteCities.findIndex(city => 
+      city.latitude === this.citySelected?.latitude && 
+      city.longitude === this.citySelected?.longitude
+    );
+
+    if (index === -1) {
+      this.favoriteCities.push(this.citySelected);
+      this.snackBar.open(`${this.citySelected.name} added to favorites`, 'Close', {
+        duration: 3000
+      });
+    } else {
+      this.favoriteCities.splice(index, 1);
+      this.snackBar.open(`${this.citySelected.name} removed from favorites`, 'Close', {
+        duration: 3000
+      });
+    }
+
+    this.isFavorite = !this.isFavorite;
+    this.saveFavoriteCities();
+  }
+
+  selectFavoriteCity(city: GeocodeResult): void {
+    this.citySelected = city;
+    this.citySearchControl.setValue(city.name);
+    this.isFavorite = true;
+    this.loadWeatherData(city);
   }
 
 }
