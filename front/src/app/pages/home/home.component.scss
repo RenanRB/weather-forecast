@@ -1,5 +1,4 @@
 @use '@angular/material' as mat;
-$primary-palette: mat.define-palette(mat.$deep-purple-palette);
 
 .weather-dashboard {
   display: flex;
@@ -22,9 +21,6 @@ $primary-palette: mat.define-palette(mat.$deep-purple-palette);
       display: flex;
       justify-content: center;
       align-items: center;
-      padding-bottom: 30px;
-      border-bottom: 1px solid;
-      margin-bottom: 50px;
 
       .location-button {
         background: none;
@@ -38,6 +34,10 @@ $primary-palette: mat.define-palette(mat.$deep-purple-palette);
           font-size: 44px;
           width: 44px;
           height: 44px;
+
+          &:hover {
+            color: mat.get-color-from-palette(mat.$amber-palette, 500);
+          }
         }
       }
 
@@ -77,6 +77,7 @@ $primary-palette: mat.define-palette(mat.$deep-purple-palette);
             padding: 0;
             color: white;
             cursor: pointer;
+            margin-right: 6px;
 
             .favorite-icon {
               transition: color 0.3s ease;
@@ -125,6 +126,75 @@ $primary-palette: mat.define-palette(mat.$deep-purple-palette);
     .current-date {
       font-size: 20px;
     }
+
+    .favorite-cities {
+      margin-top: 30px;
+      
+      .favorite-cities-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 10px;
+        width: 100%;
+        color: white;
+        background: none;
+        border: none;
+        cursor: pointer;
+        
+        h3 {
+          color: white;
+          font-size: 20px;
+          margin-bottom: 15px;
+        }
+
+        .toggle-favorites-button {
+          color: white;
+        }
+      }
+      
+      .favorite-cities-list {
+        mat-card {
+          margin: 10px 0;
+          background-color: #3d3d3d;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+    
+          &:hover {
+            background-color: #4a4a4a;
+          }
+    
+          mat-card-content {
+            .favorite-city-content {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+    
+              p {
+                margin: 0;
+                font-size: 16px;
+              }
+      
+              span {
+                font-size: 14px;
+                color: #cccccc;
+              }
+            
+              .delete-button {
+                color: white;
+                background: none;
+                border: none;
+                padding: 0;
+                cursor: pointer;
+              }
+              
+              .delete-button:hover {
+                color: #f44336;
+              }
+            }
+          }
+        }
+      }
+    }    
   }
 
   .main-content {
@@ -243,12 +313,24 @@ $primary-palette: mat.define-palette(mat.$deep-purple-palette);
   }
 }
 
+.divider {
+  display: block;
+  border-bottom: 1px solid;
+  margin: 30px 0;
+}
+
 @media screen and (max-width: 1024px) {
   .weather-dashboard {
     flex-direction: column;
 
     .sidebar {
       width: 100%;
+
+      .favorite-cities {
+        .hidden-mobile {
+          display: none;
+        }
+      }
     }
 
     .main-content {
@@ -316,40 +398,5 @@ $primary-palette: mat.define-palette(mat.$deep-purple-palette);
 .loading-spinner {
   ::ng-deep circle {
     stroke: #fff;
-  }
-}
-
-.favorite-cities {
-  margin-top: 30px;
-  
-  h3 {
-    color: white;
-    font-size: 20px;
-    margin-bottom: 15px;
-  }
-
-  .favorite-cities-list {
-    mat-card {
-      margin: 10px 0;
-      background-color: #3d3d3d;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-
-      &:hover {
-        background-color: #4a4a4a;
-      }
-
-      mat-card-content {
-        p {
-          margin: 0;
-          font-size: 16px;
-        }
-
-        span {
-          font-size: 14px;
-          color: #cccccc;
-        }
-      }
-    }
   }
 }

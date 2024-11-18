@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
@@ -8,6 +8,7 @@ import { WeatherService } from '../../services/weather.service';
 import { WeatherData, WeatherResponse } from '../../core/interfaces/weather.interface';
 import { GeocodeService } from '../../services/geocode.service';
 import { GeocodeResult } from '../../core/interfaces/geocode.interface';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -18,17 +19,19 @@ import { GeocodeResult } from '../../core/interfaces/geocode.interface';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   weatherData?: WeatherResponse;
   showLastWeek: boolean = false;
   citySearchControl = new FormControl('');
   citySelected: GeocodeResult | null = null;
   filteredCities: Observable<GeocodeResult[]>;
   isLoading: boolean = false;
-  isFavorite = true;
-  private readonly STORED_CITY_KEY = 'lastSelectedCity';
+  isFavorite: boolean = false;
+  private readonly STORED_CITY_KEY = environment.storageKeys.STORED_CITY_KEY;
+  private readonly FAVORITE_CITIES_KEY = environment.storageKeys.FAVORITE_CITIES_KEY;
   favoriteCities: GeocodeResult[] = [];
-  private readonly FAVORITE_CITIES_KEY = 'favoriteCities';
+  isSmallScreen: boolean = false;
+  showFavorites: boolean = false;
 
   constructor(
     private readonly weatherService: WeatherService, 
@@ -43,6 +46,8 @@ export class HomeComponent implements OnInit {
         return this.geocodeService.searchCities(searchTerm);
       })
     );
+  
+    window.addEventListener('resize', this.checkScreenSize.bind(this));
   }
 
   ngOnInit(): void {
@@ -51,10 +56,27 @@ export class HomeComponent implements OnInit {
     if (storedCity) {
       this.citySelected = storedCity;
       this.citySearchControl.setValue(storedCity.name);
+      this.isFavorite = this.isSelectedCityFavorite();
       this.loadWeather(storedCity.latitude, storedCity.longitude);
     } else {
       this.loadWeather();
     }
+    this.checkScreenSize();
+  }
+
+  ngOnDestroy(): void {
+    window.removeEventListener('resize', this.checkScreenSize.bind(this));
+  }
+
+  private checkScreenSize(): void {
+    this.isSmallScreen = window.innerWidth <= 1024;
+    if (!this.isSmallScreen) {
+      this.showFavorites = false;
+    }
+  }
+
+  toggleFavoritesVisibility(): void {
+    this.showFavorites = !this.showFavorites;
   }
 
   private getStoredCity(): GeocodeResult | null {
@@ -147,9 +169,7 @@ export class HomeComponent implements OnInit {
 
   onCitySelected(event: any) {
     const city = event.option.value;
-    this.citySelected = city;
-    this.saveCity(city);
-    this.loadWeatherData(city);
+    this.selectFavoriteCity(city);
   }
 
   loadWeatherData(city: GeocodeResult) {
@@ -186,6 +206,13 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  private isSelectedCityFavorite(): boolean {
+    return this.favoriteCities.some(city => 
+      city.latitude === this.citySelected?.latitude && 
+      city.longitude === this.citySelected?.longitude
+    );
+  }
+
   private saveFavoriteCities(): void {
     localStorage.setItem(this.FAVORITE_CITIES_KEY, JSON.stringify(this.favoriteCities));
   }
@@ -204,20 +231,26 @@ export class HomeComponent implements OnInit {
         duration: 3000
       });
     } else {
-      this.favoriteCities.splice(index, 1);
-      this.snackBar.open(`${this.citySelected.name} removed from favorites`, 'Close', {
-        duration: 3000
-      });
+      this.removeFavoriteCity(this.citySelected);
     }
 
     this.isFavorite = !this.isFavorite;
     this.saveFavoriteCities();
   }
 
+  removeFavoriteCity(city: GeocodeResult): void {
+    this.favoriteCities = this.favoriteCities.filter(c => c !== city);
+    this.saveFavoriteCities();
+
+    this.snackBar.open(`${city.name} removed from favorites`, 'Close', {
+      duration: 3000
+    });
+  }
+
   selectFavoriteCity(city: GeocodeResult): void {
     this.citySelected = city;
-    this.citySearchControl.setValue(city.name);
-    this.isFavorite = true;
+    this.isFavorite = this.isSelectedCityFavorite();
+    this.saveCity(city);
     this.loadWeatherData(city);
   }
 

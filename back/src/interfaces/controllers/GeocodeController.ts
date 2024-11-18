@@ -21,6 +21,9 @@ export class GeocodeController {
             const geocodeResults = await geocodeService.getGeocode(locationResult.validLocation!);
             return res.json(geocodeResults);
         } catch (error) {
+            if (error instanceof Error) {
+                return res.status(404).json({ error: error.message });
+            }
             return res.status(500).json({ error: 'Error fetching address' });
         }
     }

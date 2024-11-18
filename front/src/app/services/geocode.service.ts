@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { catchError, Observable, of } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { GeocodeResult } from '../core/interfaces/geocode.interface';
 
@@ -16,6 +16,11 @@ export class GeocodeService {
     if (!query || query.length < 3) {
       return of([]);
     }
-    return this.http.get<GeocodeResult[]>(`${this.apiUrl}/cities?location=${query}`);
+    return this.http.get<GeocodeResult[]>(`${this.apiUrl}/cities?location=${query}`).pipe(
+      catchError((error) => {
+        console.error('Error fetching cities:', error);
+        return of([]);
+      })
+    );
   }
 }

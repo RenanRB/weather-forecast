@@ -27,6 +27,7 @@
           </mat-autocomplete>
         </mat-form-field>
       </div>
+      <div class="divider"></div>
       <div class="current-weather">
         <div class="city-selected" *ngIf="citySelected">
           <div class="city-info">
@@ -54,13 +55,38 @@
           {{weatherData?.dailyForecast?.[0]?.time | date:'EEEE, MMMM d'}}
         </div>
       </div>
+      <div class="divider"></div>
       <div class="favorite-cities">
-        <h3>Cidades Favoritas</h3>
-        <div class="favorite-cities-list">
-          <mat-card *ngFor="let city of favoriteCities" (click)="selectFavoriteCity(city)">
+        <button class="favorite-cities-header" 
+             (click)="toggleFavoritesVisibility()"
+             (keydown.enter)="toggleFavoritesVisibility()"
+             [class.clickable]="isSmallScreen"
+             *ngIf="isSmallScreen">
+          <h3>Favorite Cities</h3>
+          <mat-icon>{{ showFavorites ? 'expand_less' : 'expand_more' }}</mat-icon>
+        </button>
+        <div class="favorite-cities-header" *ngIf="!isSmallScreen">
+          <h3>Favorite Cities</h3>
+        </div>
+        <div class="favorite-cities-list" [class.hidden-mobile]="isSmallScreen && !showFavorites">
+          <mat-card 
+            *ngFor="let city of favoriteCities" 
+            (click)="selectFavoriteCity(city)"
+            (keydown.enter)="selectFavoriteCity(city)"
+            (keydown)="$event.key === 'Enter' && selectFavoriteCity(city)"
+            tabindex="0">
             <mat-card-content>
-              <p>{{ city.name }}</p>
-              <span>{{ city.admin }}</span>
+              <div class="favorite-city-content">
+                <div>
+                  <p>{{ city.name }}</p>
+                  <span>{{ city.admin }}</span>
+                </div>
+                <button mat-icon-button 
+                        class="delete-button" 
+                        (click)="removeFavoriteCity(city); $event.stopPropagation()">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
             </mat-card-content>
           </mat-card>
         </div>

@@ -56,7 +56,7 @@ export class OpenMeteoAPI implements GeocodeAdapter, WeatherAdapter {
     }
 
     private toForecastDTO(data: any): WeatherData[] {
-        if (!data) {
+        if (!data.daily?.time?.length) {
             return [];
         }
         const { daily } = data;
@@ -123,7 +123,7 @@ export class OpenMeteoAPI implements GeocodeAdapter, WeatherAdapter {
     }
 
     private toGeocodeDTO(data: any): GeocodeResult[] {
-        if (!data) {
+        if (!data.results?.length) {
             return [];
         }
 
