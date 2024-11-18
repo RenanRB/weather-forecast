@@ -24,6 +24,13 @@
             <mat-option *ngFor="let city of filteredCities | async" [value]="city">
               {{city.name}} / {{city.admin}}
             </mat-option>
+            <mat-option 
+              *ngIf="citySearchControl?.dirty
+              && (citySearchControl.value?.length || 0) >= 3
+              && (filteredCities | async)?.length === 0"
+              [disabled]="true">
+              No city found
+            </mat-option>
           </mat-autocomplete>
         </mat-form-field>
       </div>

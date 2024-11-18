@@ -233,7 +233,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     const index = this.favoriteCities.findIndex(city => 
       city.name === this.citySelected?.name && 
-      city.admin === this.citySelected?.admin
+      city.longitude === this.citySelected?.longitude
     );
 
     if (index === -1) {
