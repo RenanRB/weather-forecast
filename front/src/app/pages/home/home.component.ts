@@ -50,10 +50,21 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.selectedCityService.selectedCity$.subscribe((city) => {
-      if (city) {
-        this.citySelected = city;
-        this.loadWeatherData(city);
+      if (!city) {
+        city = {
+          latitude: 40.71427,
+          longitude: -74.00597,
+          elevation: '10m',
+          name: 'New York',
+          admin: 'New York',
+          country: 'United States',
+          countryCode: 'US',
+          timezone: 'America/New_York'
+        };
       }
+
+      this.citySelected = city;
+      this.loadWeatherData(city);
     });
   }
 

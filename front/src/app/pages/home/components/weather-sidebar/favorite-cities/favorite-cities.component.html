@@ -11,7 +11,10 @@
     <mat-icon>{{ showFavorites ? "expand_less" : "expand_more" }}</mat-icon>
   </button>
   <div class="favorite-cities-header" *ngIf="!isSmallScreen">
-    <h3>Favorite Cities</h3>
+    <h3 *ngIf="favoriteCities.length > 0">Favorite Cities</h3>
+    <div *ngIf="favoriteCities.length === 0">
+      <p>No favorite cities. Click in the heart icon to add a city to your favorites</p>
+    </div>
   </div>
   <div
     class="favorite-cities-list"
