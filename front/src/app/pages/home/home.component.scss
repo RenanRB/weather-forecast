@@ -20,208 +20,6 @@
     max-height: 100vh;
     display: flex;
     flex-direction: column;
-
-    .search-bar {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      .location-button {
-        background: none;
-        border: none;
-        padding: 0;
-        color: white;
-        cursor: pointer;
-        margin-right: 20px;
-        
-        mat-icon {
-          font-size: 44px;
-          width: 44px;
-          height: 44px;
-
-          &:hover {
-            color: mat.get-color-from-palette(mat.$amber-palette, 500);
-          }
-        }
-      }
-
-      mat-form-field {
-        height: 60px;
-        display: block;
-      }
-    }
-
-    .current-weather {
-      .city-selected {
-        margin-bottom: 30px;
-
-        span {
-          display: block;
-          color: white;
-          font-weight: 500;
-
-          &.city-name {
-            font-size: 24px;
-          }
-
-          &.city-admin {
-            font-size: 16px;
-          }
-        } 
-        
-        .city-info {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin-bottom: 10px;
-
-          .favorite-button {
-            background: none;
-            border: none;
-            padding: 0;
-            color: white;
-            cursor: pointer;
-            margin-right: 6px;
-
-            .favorite-icon {
-              transition: color 0.3s ease;
-              
-              &:hover {
-                color: #ff4081;
-              }
-              
-              &.filled {
-                color: #ff4081;
-              }
-
-              &.filled:hover {
-                color: white;
-              }
-            }
-          }
-        }
-      }
-    }
-
-    .weather-icon {
-      margin-bottom: 20px;
-
-      mat-icon {
-        font-size: 60px;
-        width: 60px;
-        height: 60px;
-      }
-    }
-
-    .current-temperature {
-      display: flex;
-      height: 70px;
-      justify-content: center;
-
-      .current-temperature-value {
-        font-size: 70px;
-        margin: 0;
-        height: 70px;
-        margin-top: 15px;
-        margin-left: 24px;
-      }
-    }
-
-    .current-date {
-      font-size: 20px;
-    }
-
-    .favorite-cities {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      margin-top: 30px;
-      
-      .favorite-cities-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 10px;
-        width: 100%;
-        color: white;
-        background: none;
-        border: none;
-        cursor: pointer;
-        
-        h3 {
-          color: white;
-          font-size: 20px;
-          margin-bottom: 15px;
-        }
-
-        .toggle-favorites-button {
-          color: white;
-        }
-      }
-      
-      .favorite-cities-list {
-        flex: 1;
-        
-        .scrollable-list {
-          height: calc(100vh - 540px);
-          overflow-y: auto;
-          scrollbar-width: thin;
-          
-          mat-card {
-            margin: 10px 0;
-            background-color: #3d3d3d;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-    
-            &:hover {
-              background-color: #4a4a4a;
-            }
-
-            &:first-child {
-              margin-top: 0;
-            }
-
-            &:last-child {
-              margin-bottom: 0;
-            }
-    
-            mat-card-content {
-              .favorite-city-content {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-    
-                .favorite-city-name {
-                  margin: 0;
-                  font-size: 16px;
-                  text-align: left;
-                  display: block;
-                }
-      
-                .favorite-city-admin {
-                  font-size: 14px;
-                  color: #cccccc;
-                  text-align: left;
-                  display: block;
-                }
-            
-                .delete-button {
-                  color: white;
-                  background: none;
-                  border: none;
-                  padding: 0;
-                  cursor: pointer;
-                }
-                
-                .delete-button:hover {
-                  color: #f44336;
-                }
-              }
-            }
-          }
-        }
-      }
-    }    
   }
 
   .main-content {
@@ -353,6 +151,25 @@
   margin: 30px 0;
 }
 
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loading-spinner {
+  ::ng-deep circle {
+    stroke: #fff;
+  }
+}
+
 @media screen and (max-width: 1024px) {
   .weather-dashboard {
     flex-direction: column;
@@ -360,12 +177,6 @@
     .sidebar {
       width: 100%;
       max-width: unset;
-
-      .favorite-cities {
-        .hidden-mobile {
-          display: none;
-        }
-      }
     }
 
     .main-content {
@@ -414,24 +225,5 @@
         }
       }
     }
-  }
-}
-
-.loading-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-.loading-spinner {
-  ::ng-deep circle {
-    stroke: #fff;
   }
 }

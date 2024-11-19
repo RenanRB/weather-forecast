@@ -1,0 +1,24 @@
+<div class="search-bar">
+    <button class="location-button" mat-icon-button (click)="getCurrentLocation()">
+        <mat-icon>share_location</mat-icon>
+    </button>
+    <mat-form-field>
+        <input type="text"
+            matInput
+            [formControl]="citySearchControl"
+            [matAutocomplete]="auto"
+            placeholder="Search for a city">
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="handleCitySelection($event)" [displayWith]="displayFn">
+            <mat-option *ngFor="let city of filteredCities | async" [value]="city">
+                {{city.name}} / {{city.admin}}
+            </mat-option>
+            <mat-option 
+                *ngIf="citySearchControl?.dirty
+                        && (citySearchControl.value?.length || 0) >= 3
+                        && (filteredCities | async)?.length === 0"
+                        [disabled]="true">
+            No city found
+        </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+</div>

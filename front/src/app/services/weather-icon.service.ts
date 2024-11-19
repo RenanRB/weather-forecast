@@ -27,4 +27,9 @@ export class WeatherIconService {
       );
     });
   }
+
+  getWeatherIcon(isDay: boolean, code: number = 0): string {
+    if (code === undefined || code === null) return '';
+    return `weather-${isDay ? 'day' : 'night'}-${code}`;
+  }
 } 

@@ -1,0 +1,79 @@
+.current-weather {
+    .city-selected {
+      margin-bottom: 30px;
+
+      span {
+        display: block;
+        color: white;
+        font-weight: 500;
+
+        &.city-name {
+          font-size: 24px;
+        }
+
+        &.city-admin {
+          font-size: 16px;
+        }
+      } 
+      
+      .city-info {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+
+        .favorite-button {
+          background: none;
+          border: none;
+          padding: 0;
+          color: white;
+          cursor: pointer;
+          margin-right: 6px;
+
+          .favorite-icon {
+            transition: color 0.3s ease;
+            
+            &:hover {
+              color: #ff4081;
+            }
+            
+            &.filled {
+              color: #ff4081;
+            }
+
+            &.filled:hover {
+              color: white;
+            }
+          }
+        }
+      }
+    }
+
+    .weather-icon {
+      margin-bottom: 20px;
+
+      mat-icon {
+        font-size: 60px;
+        width: 60px;
+        height: 60px;
+      }
+    }
+
+    .current-temperature {
+      display: flex;
+      height: 70px;
+      justify-content: center;
+
+      .current-temperature-value {
+        font-size: 70px;
+        margin: 0;
+        height: 70px;
+        margin-top: 15px;
+        margin-left: 24px;
+      }
+    }
+
+    .current-date {
+      font-size: 20px;
+    }
+}

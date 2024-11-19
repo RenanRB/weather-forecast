@@ -1,0 +1,45 @@
+<div class="favorite-cities">
+  <button
+    class="favorite-cities-header"
+    (click)="toggleFavoritesVisibility()"
+    (keydown.enter)="toggleFavoritesVisibility()"
+    [class.clickable]="isSmallScreen"
+    *ngIf="isSmallScreen"
+  >
+    
+    <h3>Favorite Cities</h3>
+    <mat-icon>{{ showFavorites ? "expand_less" : "expand_more" }}</mat-icon>
+  </button>
+  <div class="favorite-cities-header" *ngIf="!isSmallScreen">
+    <h3>Favorite Cities</h3>
+  </div>
+  <div
+    class="favorite-cities-list"
+    [class.hidden-mobile]="isSmallScreen && !showFavorites"
+  >
+    <div class="scrollable-list">
+      <mat-card
+        *ngFor="let city of favoriteCities"
+        (click)="handleCitySelection(city)"
+        (keydown.enter)="handleCitySelection(city)"
+        tabindex="0"
+      >
+        <mat-card-content>
+          <div class="favorite-city-content">
+            <div>
+              <span class="favorite-city-name">{{ city.name }}</span>
+              <span class="favorite-city-admin">{{ city.admin }}</span>
+            </div>
+            <button
+              mat-icon-button
+              class="delete-button"
+              (click)="removeFavoriteCity(city); $event.stopPropagation()"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

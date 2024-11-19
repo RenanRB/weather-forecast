@@ -10,98 +10,11 @@
   <!-- Sidebar Section -->
   <mat-card class="sidebar">
     <mat-card-content>
-      <div class="search-bar">
-        <button class="location-button" mat-icon-button (click)="getCurrentLocation()">
-          <mat-icon>share_location</mat-icon>
-        </button>
-        <mat-form-field>
-          <input type="text"
-                matInput
-                [formControl]="citySearchControl"
-                [matAutocomplete]="auto"
-                placeholder="Search for a city">
-          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onCitySelected($event)" [displayWith]="displayFn">
-            <mat-option *ngFor="let city of filteredCities | async" [value]="city">
-              {{city.name}} / {{city.admin}}
-            </mat-option>
-            <mat-option 
-              *ngIf="citySearchControl?.dirty
-                && (citySearchControl.value?.length || 0) >= 3
-                && (filteredCities | async)?.length === 0"
-              [disabled]="true">
-              No city found
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-      </div>
+      <app-shearch-bar (onCitySelected)="handleCitySelection($event)"></app-shearch-bar>
       <div class="divider"></div>
-      <div class="current-weather">
-        <div class="city-selected" *ngIf="citySelected">
-          <div class="city-info">
-            <button class="favorite-button" mat-icon-button (click)="toggleFavorite()" *ngIf="citySelected?.name !== 'Current Location'">
-              <mat-icon [class.filled]="isFavorite" class="favorite-icon">
-                {{ isFavorite ? 'favorite' : 'favorite_border' }}
-              </mat-icon>
-            </button>
-            <span class="city-name">{{citySelected.name}}</span>
-          </div>
-          <span class="city-admin">{{citySelected.admin}}</span>
-        </div>
-        <div class="weather-icon">
-          <mat-icon 
-            [svgIcon]="getWeatherIcon(!!weatherData?.currentWeatherData?.isDayOrNight, weatherData?.currentWeatherData?.weatherCode)">
-          </mat-icon>
-        </div>
-        <h1 class="current-temperature">
-          <span class="current-temperature-value">
-            {{weatherData?.currentWeatherData?.temperature | number:'1.0-0'}}
-          </span>
-          <span class="current-temperature-unit">
-            {{weatherData?.currentWeatherUnits?.temperature}}
-          </span>
-        </h1>
-        <div class="current-date">
-          {{weatherData?.dailyForecast?.[0]?.time | date:'EEEE, MMMM d'}}
-        </div>
-      </div>
+      <app-current-weather [weatherData]="weatherData" [citySelected]="citySelected"></app-current-weather>
       <div class="divider"></div>
-      <div class="favorite-cities">
-        <button class="favorite-cities-header" 
-             (click)="toggleFavoritesVisibility()"
-             (keydown.enter)="toggleFavoritesVisibility()"
-             [class.clickable]="isSmallScreen"
-             *ngIf="isSmallScreen">
-          <h3>Favorite Cities</h3>
-          <mat-icon>{{ showFavorites ? 'expand_less' : 'expand_more' }}</mat-icon>
-        </button>
-        <div class="favorite-cities-header" *ngIf="!isSmallScreen">
-          <h3>Favorite Cities</h3>
-        </div>
-        <div class="favorite-cities-list" [class.hidden-mobile]="isSmallScreen && !showFavorites">
-          <div class="scrollable-list">
-            <mat-card 
-              *ngFor="let city of favoriteCities" 
-              (click)="selectFavoriteCity(city)"
-              (keydown.enter)="selectFavoriteCity(city)"
-              (keydown)="$event.key === 'Enter' && selectFavoriteCity(city)"
-              tabindex="0">
-              <mat-card-content>
-                <div class="favorite-city-content">
-                  <div>
-                    <span class="favorite-city-name">{{ city.name }}</span>
-                    <span class="favorite-city-admin">{{ city.admin }}</span>
-                  </div>
-                  <button mat-icon-button 
-                          class="delete-button" 
-                          (click)="removeFavoriteCity(city); $event.stopPropagation()">
-                    <mat-icon>delete</mat-icon>
-                  </button>
-                </div>
-              </mat-card-content>
-            </mat-card>
-          </div>
-        </div>
-      </div>
+      <app-favorite-cities (onCitySelected)="handleCitySelection($event)"></app-favorite-cities>
     </mat-card-content>
   </mat-card>
 

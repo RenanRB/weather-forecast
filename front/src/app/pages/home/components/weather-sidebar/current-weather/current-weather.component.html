@@ -1,0 +1,29 @@
+<div class="current-weather">
+    <div class="city-selected" *ngIf="citySelected">
+      <div class="city-info">
+        <button class="favorite-button" mat-icon-button (click)="toggleFavorite()" *ngIf="citySelected?.name !== 'Current Location'">
+          <mat-icon [class.filled]="isFavorite" class="favorite-icon">
+            {{ isFavorite ? 'favorite' : 'favorite_border' }}
+          </mat-icon>
+        </button>
+        <span class="city-name">{{citySelected.name}}</span>
+      </div>
+      <span class="city-admin">{{citySelected.admin}}</span>
+    </div>
+    <div class="weather-icon">
+      <mat-icon 
+        [svgIcon]="getWeatherIcon(!!weatherData?.currentWeatherData?.isDayOrNight, weatherData?.currentWeatherData?.weatherCode)">
+      </mat-icon>
+    </div>
+    <h1 class="current-temperature">
+      <span class="current-temperature-value">
+        {{weatherData?.currentWeatherData?.temperature | number:'1.0-0'}}
+      </span>
+      <span class="current-temperature-unit">
+        {{weatherData?.currentWeatherUnits?.temperature}}
+      </span>
+    </h1>
+    <div class="current-date">
+      {{weatherData?.dailyForecast?.[0]?.time | date:'EEEE, MMMM d'}}
+    </div>
+</div>

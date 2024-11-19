@@ -1,0 +1,31 @@
+@use '@angular/material' as mat;
+
+.search-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .location-button {
+      background: none;
+      border: none;
+      padding: 0;
+      color: white;
+      cursor: pointer;
+      margin-right: 20px;
+      
+      mat-icon {
+        font-size: 44px;
+        width: 44px;
+        height: 44px;
+
+        &:hover {
+          color: mat.get-color-from-palette(mat.$amber-palette, 500);
+        }
+      }
+    }
+
+    mat-form-field {
+      height: 60px;
+      display: block;
+    }
+}
