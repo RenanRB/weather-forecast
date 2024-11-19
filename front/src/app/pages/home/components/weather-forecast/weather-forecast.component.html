@@ -1,0 +1,16 @@
+<div class="forecast-grid">
+    <mat-card *ngFor="let day of weatherList">
+      <mat-card-content>
+        <span>{{ day.time | date:'EEE':'' }}</span>
+        <span>{{ day.time | date:'MMM d':'' }}</span>
+        <mat-icon
+          class="weather-icon"
+        [svgIcon]="getWeatherIcon(!!weatherResponse?.currentWeatherData?.isDayOrNight, day.weatherCode)">
+      </mat-icon>
+        <div class="temperature-range">
+          <span>{{ (day.temperatureMax | number:'1.0-0') + ' ' + weatherResponse?.forecastUnits?.temperatureMax }}</span>
+          <span>{{ (day.temperatureMin | number:'1.0-0') + ' ' + weatherResponse?.forecastUnits?.temperatureMin }}</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+</div>

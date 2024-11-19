@@ -17,14 +17,14 @@ import { SelectedCityService } from '../../../services/selected-city.service';
 })
 export class CurrentWeatherComponent implements OnInit {
 
-  @Input() set weatherData(value: WeatherResponse | undefined) {
+  @Input() set weatherResponse(value: WeatherResponse | undefined) {
     if (value) {
-      this._weatherData = value;
+      this._weatherResponse = value;
     }
   }
 
-  get weatherData(): WeatherResponse | undefined {
-    return this._weatherData;
+  get weatherResponse(): WeatherResponse | undefined {
+    return this._weatherResponse;
   }
 
   @Input() set citySelected(value: GeocodeResult) {
@@ -41,7 +41,7 @@ export class CurrentWeatherComponent implements OnInit {
   isFavorite: boolean = false;
 
   private _citySelected!: GeocodeResult;
-  private _weatherData!: WeatherResponse;
+  private _weatherResponse!: WeatherResponse;
 
   constructor(
     private readonly weatherIconService: WeatherIconService,

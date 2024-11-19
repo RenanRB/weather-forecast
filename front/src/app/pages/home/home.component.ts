@@ -10,6 +10,8 @@ import { FavoriteCitiesComponent } from './components/weather-sidebar/favorite-c
 import { WeatherIconService } from '../../services/weather-icon.service';
 import { CurrentWeatherComponent } from './components/weather-sidebar/current-weather/current-weather.component';
 import { SelectedCityService } from './services/selected-city.service';
+import { WeatherForecastComponent } from './components/weather-forecast/weather-forecast.component';
+import { WeatherHighlightsComponent } from './components/weather-highlights/weather-highlights.component';
 
 @Component({
   selector: 'app-home',
@@ -18,17 +20,25 @@ import { SelectedCityService } from './services/selected-city.service';
     ShearchBarComponent,
     FavoriteCitiesComponent,
     CurrentWeatherComponent,
+    WeatherForecastComponent,
+    WeatherHighlightsComponent,
     SharedModule,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit {
-  weatherData?: WeatherResponse;
+  weatherResponse?: WeatherResponse;
   showLastWeek: boolean = false;
   citySearchControl = new FormControl('');
   citySelected!: GeocodeResult;
   isLoading: boolean = false;
+
+  get weatherListToShow(): WeatherData[] {
+    return this.showLastWeek 
+      ? this.weatherResponse?.historicalWeatherData?.slice(1, -1) ?? [] 
+      : this.weatherResponse?.dailyForecast?.slice(1) ?? [];
+  }
 
   constructor(
     private readonly weatherService: WeatherService, 
@@ -47,42 +57,17 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  get weatherListToShow(): WeatherData[] {
-    return this.showLastWeek 
-      ? this.weatherData?.historicalWeatherData?.slice(1, -1) ?? [] 
-      : this.weatherData?.dailyForecast?.slice(1) ?? [];
-  }
-
   handleCitySelection(city: GeocodeResult): void {
     this.citySelected = city;
     this.selectedCityService.saveCity(city);
     this.loadWeatherData(city);
   }
 
-  loadWeather(latitude: number = -26.4263, longitude: number = -49.1467): void {
-    this.isLoading = true;
-    this.weatherService.getWeather(latitude, longitude).subscribe({
-      next: (data) => {
-        this.weatherData = data;
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.error('Error loading weather data:', error);
-        this.isLoading = false;
-        this.snackBar.open('Unable to load weather data. Please try again later.', 'Close', {
-          duration: 5000,
-          horizontalPosition: 'center',
-          verticalPosition: 'bottom',
-        });
-      }
-    });
-  }
-
-  loadWeatherData(city: GeocodeResult) {
+  loadWeatherData(city: GeocodeResult): void {
     this.isLoading = true;
     this.weatherService.getWeather(city.latitude, city.longitude).subscribe({
       next: (data) => {
-        this.weatherData = data;
+        this.weatherResponse = data;
         this.isLoading = false;
       },
       error: (error) => {

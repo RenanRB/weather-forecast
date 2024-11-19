@@ -1,0 +1,45 @@
+.forecast-grid {
+    display: flex;
+    justify-content: space-around;
+
+    mat-card {
+      width: 12%;
+      height: 140px;
+      text-align: center;
+      background-color: #636a78;
+      color: white;
+      -webkit-box-shadow: 3px 8px 20px 3px #292c31;
+      -moz-box-shadow: 3px 8px 20px 3px #292c31;
+      box-shadow: 3px 8px 20px 3px #292c31;
+      
+      mat-card-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        height: 100%;
+
+        .weather-icon {
+          font-size: 38px;
+          width: 38px;
+          height: 38px;
+        }
+
+        .temperature-range {
+          display: flex;
+          flex-direction: column;
+        }
+      }
+    }
+}
+
+@media screen and (max-width: 842px) {
+    .forecast-grid {
+        flex-wrap: wrap;
+
+        mat-card {
+            width: 30%;
+            margin-bottom: 20px;
+        }
+    }
+}

@@ -12,18 +12,18 @@
     </div>
     <div class="weather-icon">
       <mat-icon 
-        [svgIcon]="getWeatherIcon(!!weatherData?.currentWeatherData?.isDayOrNight, weatherData?.currentWeatherData?.weatherCode)">
+        [svgIcon]="getWeatherIcon(!!weatherResponse?.currentWeatherData?.isDayOrNight, weatherResponse?.currentWeatherData?.weatherCode)">
       </mat-icon>
     </div>
     <h1 class="current-temperature">
       <span class="current-temperature-value">
-        {{weatherData?.currentWeatherData?.temperature | number:'1.0-0'}}
+        {{weatherResponse?.currentWeatherData?.temperature | number:'1.0-0'}}
       </span>
       <span class="current-temperature-unit">
-        {{weatherData?.currentWeatherUnits?.temperature}}
+        {{weatherResponse?.currentWeatherUnits?.temperature}}
       </span>
     </h1>
     <div class="current-date">
-      {{weatherData?.dailyForecast?.[0]?.time | date:'EEEE, MMMM d'}}
+      {{weatherResponse?.dailyForecast?.[0]?.time | date:'EEEE, MMMM d'}}
     </div>
 </div>

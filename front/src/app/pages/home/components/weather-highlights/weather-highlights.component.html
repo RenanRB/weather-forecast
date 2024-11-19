@@ -1,0 +1,68 @@
+<div class="highlights-grid">
+    <mat-card>
+      <mat-card-content>
+        <div class="highlight-item-title">
+          <p>UV Index</p>
+        </div>
+        <div class="highlight-item-content">
+          <mat-icon>brightness_high</mat-icon>
+          <h2>{{weatherResponse?.dailyForecast?.[0]?.uvIndex | number:'1.0-0' }}</h2>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card>
+      <mat-card-content>  
+        <div class="highlight-item-title">
+          <p>Wind Speed</p>
+        </div>
+        <div class="highlight-item-content">
+          <mat-icon>air</mat-icon>
+          <h2>{{weatherResponse?.currentWeatherData?.windSpeed | number:'1.0-0' }} {{weatherResponse?.currentWeatherUnits?.windSpeed }}</h2>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card>
+      <mat-card-content>  
+        <div class="highlight-item-title">
+          <p>Humidity</p>
+        </div>
+        <div class="highlight-item-content">
+          <mat-icon>opacity</mat-icon>
+          <h2>{{weatherResponse?.currentWeatherData?.humidity | number:'1.0-0' }} {{weatherResponse?.currentWeatherUnits?.humidity }}</h2>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card>
+      <mat-card-content>  
+        <div class="highlight-item-title">
+          <p>Wind Direction</p>
+        </div>
+        <div class="highlight-item-content">
+          <mat-icon>navigation</mat-icon>
+          <h2>{{weatherResponse?.currentWeatherData?.windDirection | number:'1.0-0' }} {{weatherResponse?.currentWeatherUnits?.windDirection }}</h2>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card>
+      <mat-card-content>  
+        <div class="highlight-item-title">
+          <p>Feels Like</p>
+        </div>
+        <div class="highlight-item-content">
+          <mat-icon>sentiment_satisfied</mat-icon>
+          <h2> {{weatherResponse?.currentWeatherData?.apparentTemperature | number:'1.0-0' }} {{weatherResponse?.currentWeatherUnits?.apparentTemperature }}</h2>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card>
+      <mat-card-content>  
+        <div class="highlight-item-title">
+          <p>Pressure</p>
+        </div>
+        <div class="highlight-item-content">
+          <mat-icon>speed</mat-icon>
+          <h2> {{weatherResponse?.currentWeatherData?.surfacePressure | number:'1.0-0' }} {{weatherResponse?.currentWeatherUnits?.surfacePressure }}</h2>
+        </div>
+      </mat-card-content>
+    </mat-card>
+</div>
