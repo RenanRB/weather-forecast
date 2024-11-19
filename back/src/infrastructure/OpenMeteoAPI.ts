@@ -4,6 +4,9 @@ import { CurrentWeatherData, CurrentWeatherUnits, WeatherData, WeatherUnits, Wea
 
 const DAILY_PARAMS = 'weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,rain_sum,wind_speed_10m_max,wind_gusts_10m_max,wind_direction_10m_dominant,apparent_temperature_max,apparent_temperature_min,uv_index_max';
 const CURRENT_PARAMS = 'temperature_2m,relative_humidity_2m,apparent_temperature,is_day,weather_code,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m';
+const TEMPERATURE_UNIT = 'fahrenheit';
+const WIND_SPEED_UNIT = 'mph';
+const PRECIPITATION_UNIT = 'inch';
 const FORECAST_URL = 'https://api.open-meteo.com';
 const HISTORICAL_URL = 'https://historical-forecast-api.open-meteo.com';
 const GEOCODING_URL = 'https://geocoding-api.open-meteo.com';
@@ -20,6 +23,9 @@ export class OpenMeteoAPI implements GeocodeAdapter, WeatherAdapter {
                 longitude: lon,
                 daily: DAILY_PARAMS,
                 current: CURRENT_PARAMS,
+                temperature_unit: TEMPERATURE_UNIT,
+                wind_speed_unit: WIND_SPEED_UNIT,
+                precipitation_unit: PRECIPITATION_UNIT,
                 timezone: timezone
             }
         });
@@ -29,8 +35,10 @@ export class OpenMeteoAPI implements GeocodeAdapter, WeatherAdapter {
                 longitude: lon,
                 past_days: 7,
                 daily: DAILY_PARAMS,
+                temperature_unit: TEMPERATURE_UNIT,
+                wind_speed_unit: WIND_SPEED_UNIT,
+                precipitation_unit: PRECIPITATION_UNIT,
                 timezone: timezone,
-                models: 'icon_seamless'
             }
         });
 
