@@ -59,8 +59,8 @@ Easily set up and run the application using Docker.
 1. Clone the repository and navigate to the project root:
 
    ```bash
-   git clone https://github.com/yourusername/weather-forecast-app.git
-   cd weather-forecast-app
+   git clone https://github.com/RenanRB/weather-forecast
+   cd weather-forecast
    ```
 
 2. Start the development containers:
