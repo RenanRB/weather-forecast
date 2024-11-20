@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormControl } from '@angular/forms';
-import { debounceTime, Observable, startWith, switchMap } from 'rxjs';
+import { debounceTime, Observable, switchMap, tap, finalize } from 'rxjs';
 import { SharedModule } from '../../../../../shared/shared.module';
 import { GeocodeResult } from '../../../../../core/interfaces/geocode.interface';
 import { GeocodeService } from '../../../../../services/geocode.service';
@@ -20,17 +20,20 @@ export class SearchBarComponent {
 
   citySearchControl = new FormControl('');
   filteredCities: Observable<GeocodeResult[]>;
+  isLoading: boolean = false;
 
   constructor(
     private readonly snackBar: MatSnackBar,
     private readonly geocodeService: GeocodeService
   ) {
     this.filteredCities = this.citySearchControl.valueChanges.pipe(
-      startWith(''),
+      tap(() => this.isLoading = true),
       debounceTime(300),
       switchMap((value: string | GeocodeResult | null) => {
         const searchTerm = typeof value === 'string' ? value : value?.name ?? '';
-        return this.geocodeService.searchCities(searchTerm);
+        return this.geocodeService.searchCities(searchTerm).pipe(
+          finalize(() => this.isLoading = false)
+        );
       })
     );}
 

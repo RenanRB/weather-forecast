@@ -28,4 +28,14 @@
       height: 60px;
       display: block;
     }
+
+    .loading-text {
+      margin-left: 10px;
+      vertical-align: super;
+    }
+    
+    mat-option mat-spinner {
+      display: inline-block;
+      vertical-align: middle;
+    }
 }

@@ -9,16 +9,25 @@
             [matAutocomplete]="auto"
             placeholder="Search for a city">
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="handleCitySelection($event)" [displayWith]="displayFn">
-            <mat-option *ngFor="let city of filteredCities | async" [value]="city">
-                {{city.name}} / {{city.admin}}
-            </mat-option>
-            <mat-option 
-                *ngIf="citySearchControl?.dirty
-                        && (citySearchControl.value?.length || 0) >= 3
-                        && (filteredCities | async)?.length === 0"
-                        [disabled]="true">
-            No city found
-        </mat-option>
+            <ng-container *ngIf="filteredCities | async as cities">
+                <mat-option *ngIf="isLoading" [disabled]="true">
+                    <mat-spinner diameter="20"></mat-spinner>
+                    <span class="loading-text">Searching for cities...</span>
+                </mat-option>
+
+                <ng-container *ngIf="!isLoading">
+                    <mat-option *ngFor="let city of cities" [value]="city">
+                        {{city.name}} / {{city.admin}}
+                    </mat-option>
+                    <mat-option 
+                        *ngIf="citySearchControl?.dirty
+                                && (citySearchControl.value?.length || 0) >= 3
+                                && cities.length === 0"
+                                [disabled]="true">
+                        No city found
+                    </mat-option>
+                </ng-container>
+            </ng-container>
         </mat-autocomplete>
     </mat-form-field>
 </div>
