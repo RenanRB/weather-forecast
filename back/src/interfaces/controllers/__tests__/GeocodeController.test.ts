@@ -91,4 +91,35 @@ describe('GeocodeController', () => {
         expect(mockResponse.status).toHaveBeenCalledWith(500);
         expect(jsonMock).toHaveBeenCalledWith({ error: 'Error fetching address' });
     });
+
+    it('should return 404 when no results are found', async () => {
+        mockRequest = {
+            query: {
+                location: 'No results found',
+                source: 'open-meteo'
+            }
+        };
+
+        const geocodeServiceMock = GeocodeService.prototype.getGeocode as jest.MockedFunction<typeof GeocodeService.prototype.getGeocode>;
+        geocodeServiceMock.mockRejectedValue(new Error('No results found for the provided location'));
+
+        await controller.getGeocode(mockRequest as Request, mockResponse as Response);
+
+        expect(mockResponse.status).toHaveBeenCalledWith(404);
+        expect(jsonMock).toHaveBeenCalledWith({ error: 'No results found for the provided location' });
+    });
+
+    it('should return 400 when location is empty', async () => {
+        mockRequest = {
+            query: {
+                location: '',
+                source: 'open-meteo'
+            }
+        };
+
+        await controller.getGeocode(mockRequest as Request, mockResponse as Response);
+
+        expect(mockResponse.status).toHaveBeenCalledWith(400);
+        expect(jsonMock).toHaveBeenCalledWith({ error: 'Location parameter is required' });
+    });
 }); 

@@ -29,6 +29,17 @@ export class OpenMeteoAPI implements GeocodeAdapter, WeatherAdapter {
                 timezone: timezone
             }
         });
+
+        if (!responseDaily?.data) {
+            return {
+                forecastUnits: {} as WeatherUnits,
+                dailyForecast: [],
+                historicalWeatherData: [],
+                currentWeatherUnits: {} as CurrentWeatherUnits,
+                currentWeatherData: {} as CurrentWeatherData,
+            } as WeatherResult;
+        }
+
         const responseHistorical = await axios.get(`${HISTORICAL_URL}/v1/forecast`, {
             params: {
                 latitude: lat,
@@ -63,7 +74,7 @@ export class OpenMeteoAPI implements GeocodeAdapter, WeatherAdapter {
     }
 
     private toForecastDTO(data: any): WeatherData[] {
-        if (!data.daily?.time?.length) {
+        if (!data?.daily?.time?.length) {
             return [];
         }
         const { daily } = data;
@@ -86,6 +97,9 @@ export class OpenMeteoAPI implements GeocodeAdapter, WeatherAdapter {
     }
 
     private toForecastUnitsDTO(data: any): WeatherUnits {
+        if (!data?.daily_units) {
+            return {} as WeatherUnits;
+        }
         const { daily_units } = data;
         return {
             temperatureMax: daily_units.temperature_2m_max,
@@ -101,6 +115,9 @@ export class OpenMeteoAPI implements GeocodeAdapter, WeatherAdapter {
     }
 
     private toCurrentForecastUnitsDTO(data: any): CurrentWeatherUnits {
+        if (!data?.current_units) {
+            return {} as CurrentWeatherUnits;
+        }
         const { current_units } = data;
         return {
             humidity: current_units.relative_humidity_2m,
@@ -115,6 +132,9 @@ export class OpenMeteoAPI implements GeocodeAdapter, WeatherAdapter {
     }
 
     private toCurrentForecastDTO(data: any): CurrentWeatherData {
+        if (!data) {
+            return {} as CurrentWeatherData;
+        }
         const { current } = data;
         return {
             humidity: current?.relative_humidity_2m,
@@ -123,14 +143,14 @@ export class OpenMeteoAPI implements GeocodeAdapter, WeatherAdapter {
             windSpeed: current?.wind_speed_10m,
             windDirection: current?.wind_direction_10m,
             windGusts: current?.wind_gusts_10m,
-            isDayOrNight: current?.is_day,
+            isDayOrNight: Boolean(current?.is_day),
             surfacePressure: current?.surface_pressure,
             weatherCode: current?.weather_code,
         };
     }
 
     private toGeocodeDTO(data: any): GeocodeResult[] {
-        if (!data.results?.length) {
+        if (!data?.results?.length) {
             return [];
         }
 
