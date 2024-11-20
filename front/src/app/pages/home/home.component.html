@@ -10,7 +10,7 @@
   <!-- Sidebar Section -->
   <mat-card class="sidebar">
     <mat-card-content>
-      <app-shearch-bar (onCitySelected)="handleCitySelection($event)"></app-shearch-bar>
+      <app-search-bar (onCitySelected)="handleCitySelection($event)"></app-search-bar>
       <div class="divider"></div>
       <app-current-weather [weatherResponse]="weatherResponse" [citySelected]="citySelected"></app-current-weather>
       <div class="divider"></div>

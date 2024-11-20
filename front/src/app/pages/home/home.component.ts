@@ -5,7 +5,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { WeatherService } from '../../services/weather.service';
 import { WeatherData, WeatherResponse } from '../../core/interfaces/weather.interface';
 import { GeocodeResult } from '../../core/interfaces/geocode.interface';
-import { ShearchBarComponent } from './components/weather-sidebar/shearch-bar/shearch-bar.component';
+import { SearchBarComponent } from './components/weather-sidebar/search-bar/search-bar.component';
 import { FavoriteCitiesComponent } from './components/weather-sidebar/favorite-cities/favorite-cities.component';
 import { WeatherIconService } from '../../services/weather-icon.service';
 import { CurrentWeatherComponent } from './components/weather-sidebar/current-weather/current-weather.component';
@@ -17,7 +17,7 @@ import { WeatherHighlightsComponent } from './components/weather-highlights/weat
   selector: 'app-home',
   standalone: true,
   imports: [
-    ShearchBarComponent,
+    SearchBarComponent,
     FavoriteCitiesComponent,
     CurrentWeatherComponent,
     WeatherForecastComponent,
