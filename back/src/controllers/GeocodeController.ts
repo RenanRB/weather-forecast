@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { GeocodeService } from '../../application/GeocodeService';
-import { OpenMeteoAPI } from '../../infrastructure/OpenMeteoAPI';
+import { GeocodeService } from '../services/GeocodeService';
+import { OpenMeteoAPI } from '../infrastructure/OpenMeteoAPI';
 
 export class GeocodeController {
     async getGeocode(req: Request, res: Response): Promise<Response> {

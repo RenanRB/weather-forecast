@@ -1,4 +1,4 @@
-import { GeocodeResult, GeocodeAdapter } from '../domain/GeocodeAdapter';
+import { GeocodeResult, GeocodeAdapter } from '../interfaces/GeocodeAdapter';
 
 export class GeocodeService {
     constructor(private readonly geocodeAdapter: GeocodeAdapter) {}

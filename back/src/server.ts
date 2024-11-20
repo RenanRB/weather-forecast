@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
-import { GeocodeController } from './interfaces/controllers/GeocodeController';
-import { WeatherController } from './interfaces/controllers/WeatherController';
+import { GeocodeController } from './controllers/GeocodeController';
+import { WeatherController } from './controllers/WeatherController';
 
 const app = express();
 const PORT = process.env.PORT ?? 3000;

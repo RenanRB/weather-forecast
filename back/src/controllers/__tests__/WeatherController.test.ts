@@ -1,7 +1,7 @@
 import { describe, jest, expect, beforeEach, it } from '@jest/globals';
 import { Request, Response } from 'express';
 import { WeatherController } from '../WeatherController';
-import { WeatherService } from '../../../application/WeatherService';
+import { WeatherService } from '../../services/WeatherService';
 
 jest.mock('../../../application/WeatherService');
 jest.mock('../../../infrastructure/OpenMeteoAPI');

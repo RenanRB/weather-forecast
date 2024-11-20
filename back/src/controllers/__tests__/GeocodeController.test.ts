@@ -1,8 +1,8 @@
 import { describe, jest, expect, beforeEach, it } from '@jest/globals';
 import { Request, Response } from 'express';
 import { GeocodeController } from '../GeocodeController';
-import { GeocodeResult } from '../../../domain/GeocodeAdapter';
-import { GeocodeService } from '../../../application/GeocodeService';
+import { GeocodeResult } from '../../domain/GeocodeAdapter';
+import { GeocodeService } from '../../application/GeocodeService';
 
 jest.mock('../../../infrastructure/OpenMeteoAPI');
 jest.mock('../../../application/GeocodeService');

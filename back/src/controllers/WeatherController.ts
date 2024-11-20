@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { WeatherService } from '../../application/WeatherService';
-import { OpenMeteoAPI } from '../../infrastructure/OpenMeteoAPI';
+import { WeatherService } from '../services/WeatherService';
+import { OpenMeteoAPI } from '../infrastructure/OpenMeteoAPI';
 
 export class WeatherController {
 
@@ -29,6 +29,7 @@ export class WeatherController {
             return res.status(500).json({ error: 'Error fetching weather forecast' });
         }
     }
+
     private validateInformation(lat: any, lon: any, timezone: any) {
         if (!lat || !lon) {
             return { error: 'Latitude and longitude are required' };

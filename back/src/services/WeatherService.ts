@@ -1,4 +1,4 @@
-import { WeatherAdapter, WeatherResult } from '../domain/WeatherAdapter';
+import { WeatherAdapter, WeatherResult } from '../interfaces/WeatherAdapter';
 
 export class WeatherService {
     constructor(private readonly weatherAdapter: WeatherAdapter) {}
